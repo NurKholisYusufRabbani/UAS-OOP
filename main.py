@@ -98,8 +98,11 @@ class MemoryCardGame:
     def __init__(self):
         pygame.init()
         self.board_size = BOARD_SIZE
-        self.screen_width = self.board_size[0] * (CARD_WIDTH + MARGIN) + MARGIN
-        self.screen_height = self.board_size[1] * (CARD_HEIGHT + MARGIN) + MARGIN
+        self.card_width = CARD_WIDTH
+        self.card_height = CARD_HEIGHT
+        self.margin = MARGIN
+        self.screen_width = self.board_size[0] * (self.card_width + self.margin) + self.margin
+        self.screen_height = self.board_size[1] * (self.card_height + self.margin) + self.margin + 50  # Tambahkan 50 piksel untuk teks "Matches:"
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
         pygame.display.set_caption("Memory Card Game")
         self.clock = pygame.time.Clock()
@@ -109,7 +112,7 @@ class MemoryCardGame:
         self.matches = 0  # Jumlah pasangan yang cocok
         self.last_flip_time = 0  # Waktu pembalikan kartu terakhir
         self.create_cards()
-        self.bg_image = pygame.image.load("assets/background.png").convert()
+        self.bg_image = pygame.image.load(f"assets/background.png").convert()  
         self.bg_image = pygame.transform.scale(self.bg_image, (self.screen_width, self.screen_height))
 
     def create_cards(self):
@@ -117,7 +120,7 @@ class MemoryCardGame:
         # Membuat dan mengacak kartu-kartu untuk permainan
         values = list(range(1, (self.board_size[0] * self.board_size[1]) // 2 + 1)) * 2
         random.shuffle(values)
-
+        
         for i, value in enumerate(values):
             x = (i % self.board_size[0]) * (CARD_WIDTH + MARGIN) + MARGIN
             y = (i // self.board_size[0]) * (CARD_HEIGHT + MARGIN) + MARGIN
@@ -164,17 +167,25 @@ class MemoryCardGame:
         for card in self.cards:
             card.draw(self.screen)  # Gambar semua kartu
 
+        # Hitung posisi teks "Matches:"
+        matches_x = 10
+        matches_y = self.screen_height - 20
+
         # Menampilkan jumlah pasangan yang cocok
         font = pygame.font.Font(None, 36)
         text = font.render(f"Matches: {self.matches}", True, (255, 255, 255))
-        self.screen.blit(text, (10, 10))
+        text_rect = text.get_rect()
+        text_rect.bottomleft = (matches_x, matches_y)
+        self.screen.blit(text, text_rect)
 
         # Cek jika game sudah selesai
         if self.matches == len(self.cards) // 2:
             font = pygame.font.Font(None, 72)
             text = font.render("You Win!", True, (255, 255, 255))
-            self.screen.blit(text, (self.screen_width // 2 - 100, self.screen_height // 2))
-
+            text_rect = text.get_rect()
+            text_rect.center = (self.screen_width // 2, self.screen_height // 2)
+            self.screen.blit(text, text_rect)
+            
     def run(self):
         # Loop utama game
         while self.running:
