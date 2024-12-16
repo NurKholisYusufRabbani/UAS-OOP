@@ -5,7 +5,7 @@ from abc import ABC, abstractmethod
 # Ukuran kartu dan margin antar kartu.
 CARD_WIDTH = 70
 CARD_HEIGHT = 100
-MARGIN = 10
+MARGIN = 20
 
 # Ukuran papan permainan (4x4)
 BOARD_SIZE = (4, 4)
