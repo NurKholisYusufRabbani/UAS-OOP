@@ -33,7 +33,7 @@ class Card(BaseCard):
         self.flipped = False  # Status kartu terbuka atau tertutup (Encapsulation)
         self.rect = pygame.Rect(x, y, CARD_WIDTH, CARD_HEIGHT)  # Posisi dan ukuran kartu
         self.front_image = pygame.image.load(front_image).convert_alpha()  # Gambar depan kartu
-        self.front_image = pygame.transform.scale(self.front_image, (CARD_WIDTH, CARD_HEIGHT))
+        self.front_image = pygame.transform.smoothscale(self.front_image, (CARD_WIDTH, CARD_HEIGHT))
         self.back_image = pygame.image.load(back_image).convert_alpha()  # Gambar belakang kartu
         self.back_image = pygame.transform.scale(self.back_image, (CARD_WIDTH, CARD_HEIGHT))
 
